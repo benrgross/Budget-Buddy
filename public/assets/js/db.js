@@ -6,9 +6,7 @@ const request = window.indexedDB.open("budget", 1);
 request.onupgradeneeded = function (event) {
   db = event.target.result;
   //create the object store "pending"
-  const pendingStore = db.createObjectStore("pending", {
-    autoIncrement: true,
-  });
+  db.createObjectStore("pending", { autoIncrement: true });
 };
 
 request.onsuccess = function (event) {
@@ -25,20 +23,20 @@ request.onerror = function (event) {
 
 function saveRecord(record) {
   // create a transaction on the pendinging db with rewrite access
-  const transaction = record.transaction(["pending"], "rewrite");
+  const transaction = db.transaction(["pending"], "readwrite");
   // acesss your pending object store
-  const pendingStore = transaction.objectStore("pending");
+  const store = transaction.objectStore("pending");
   // add record to your store
-  pendingStore.add(record);
+  store.add(record);
 }
 
 function checkDatabase() {
   // create a transaction on the pending db with rewrite access
-  const transaction = record.transaction(["pending"], "rewrite");
+  const transaction = db.transaction(["pending"], "readwrite");
   // acesss your pending object store
-  const pendingStore = transaction.objectStore("pending");
+  const store = transaction.objectStore("pending");
   // get all records from the store and set to a variable
-  const getAll = pendingStore.getAll();
+  const getAll = store.getAll();
 
   getAll.onsuccess = function () {
     if (getAll.result.length > 0) {
@@ -54,7 +52,7 @@ function checkDatabase() {
         .then(() => {
           const transaction = record.transaction(["pending"], "rewrite");
           const pendingStore = transaction.objectStore("pending");
-          //clear all items from store
+          //   clear all items from store
           pendingStore.clear();
         });
     }
