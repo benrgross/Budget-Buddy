@@ -1,13 +1,11 @@
-console.log("hello");
 const FILES_TO_CACHE = [
-  "/",
-  "/manifest.webmanifest.json",
-  "/assets/css/style.css",
-  "https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css",
+  "/manifest.webmanifest",
+  "/assets/css/styles.css",
   "/icons/icon-192x192.png",
   "/icons/icon-512x512.png",
   "/index.html",
   "/assets/js/db.js",
+  "/assets/js/index.js",
 ];
 
 const STATIC_CACHE = "static-cache-v1";
