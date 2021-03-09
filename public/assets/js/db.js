@@ -50,9 +50,10 @@ function checkDatabase() {
       })
         .then((response) => response.json())
         .then(() => {
-          const transaction = record.transaction(["pending"], "rewrite");
+          const transaction = db.transaction(["pending"], "readwrite");
+          // access your pending object store
           const pendingStore = transaction.objectStore("pending");
-          //   clear all items from store
+          // clear all items in your store
           pendingStore.clear();
         });
     }
