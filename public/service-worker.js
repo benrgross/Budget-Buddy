@@ -44,6 +44,15 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  // // non GET requests are not cached and requests to other origins are not cached
+  if (
+    event.request.method !== "GET" ||
+    !event.request.url.startsWith(self.location.origin)
+  ) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   // handle runtime GET requests for data from /api routes
   if (event.request.url.includes("/api/transaction")) {
     // make network request and fallback to cache if network request fails (offline)
@@ -51,7 +60,7 @@ self.addEventListener("fetch", (event) => {
       caches.open(RUNTIME_CACHE).then((cache) => {
         return fetch(event.request)
           .then((response) => {
-            cache.put(event.request, response.clone());
+            cache.post(event.request, response.clone());
             return response;
           })
           .catch(() => caches.match(event.request));
@@ -66,7 +75,7 @@ self.addEventListener("fetch", (event) => {
       return (
         resp ||
         fetch(event.request).then((response) => {
-          return caches.open(STATIC_CACHE).then((cache) => {
+          return caches.open(RUNTIME_CACHE).then((cache) => {
             cache.put(event.request, response.clone());
             return response;
           });
