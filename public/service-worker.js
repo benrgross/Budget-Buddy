@@ -13,11 +13,12 @@ const RUNTIME_CACHE = "runtime-cache";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches
-      .open(STATIC_CACHE)
-      .then((cache) => cache.addAll(FILES_TO_CACHE))
-      .then(() => self.skipWaiting())
+    caches.open(RUNTIME_CACHE).then((cache) => cache.add("/api/transaction"))
   );
+  event.waitUntil(
+    caches.open(STATIC_CACHE).then((cache) => cache.addAll(FILES_TO_CACHE))
+  );
+  self.skipWaiting();
 });
 
 // The activate handler takes care of cleaning up old caches.
@@ -45,13 +46,13 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   // // non GET requests are not cached and requests to other origins are not cached
-  // if (
-  //   event.request.method !== "GET" ||
-  //   !event.request.url.startsWith(self.location.origin)
-  // ) {
-  //   event.respondWith(fetch(event.request));
-  //   return;
-  // }
+  if (
+    event.request.method !== "GET" ||
+    !event.request.url.startsWith(self.location.origin)
+  ) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
 
   // handle runtime GET requests for data from /api routes
   if (event.request.url.includes("/api/transaction")) {
