@@ -14,7 +14,7 @@ Budget Buddy is an app built to track your budget by adding of subtracting items
 
 ## Usage
 
-![demo-image](/assets/images/budget.pg)
+![demo-image](/assets/images/budget.png)
 
 follow this link to the deployed website: https://budget-fun.herokuapp.com/
 
