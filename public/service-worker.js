@@ -11,16 +11,6 @@ const FILES_TO_CACHE = [
 const STATIC_CACHE = "static-cache-v1";
 const RUNTIME_CACHE = "runtime-cache";
 
-// self.addEventListener("install", (event) => {
-//   event.waitUntil(
-//     caches.open(RUNTIME_CACHE).then((cache) => cache.add("/api/transaction"))
-//   );
-//   event.waitUntil(
-//     caches.open(STATIC_CACHE).then((cache) => cache.addAll(FILES_TO_CACHE))
-//   );
-//   self.skipWaiting();
-// });
-
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
@@ -29,6 +19,7 @@ self.addEventListener("install", (event) => {
       .then(() => self.skipWaiting())
   );
 });
+
 self.addEventListener("activate", (event) => {
   const currentCaches = [STATIC_CACHE, RUNTIME_CACHE];
   event.waitUntil(
