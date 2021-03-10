@@ -75,7 +75,7 @@ self.addEventListener("fetch", (event) => {
       return (
         resp ||
         fetch(event.request).then((response) => {
-          return caches.open(STATIC_CACHE).then((cache) => {
+          return caches.open(RUNTIME_CACHE).then((cache) => {
             cache.put(event.request, response.clone());
             return response;
           });
